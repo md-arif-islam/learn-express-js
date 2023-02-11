@@ -4,7 +4,18 @@ const port = 3000;
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
-app.get("/", (req, res) => {
+// Middleware
+app.param("id", (req, res, next, id) => {
+  const userDetails = {
+    id: id,
+    name: "Bangladesh",
+  };
+  req.userDetails = userDetails;
+  next();
+});
+
+app.get("/users/:id", (req, res) => {
+  console.log(req.userDetails);
   res.send("This is home page");
 });
 
