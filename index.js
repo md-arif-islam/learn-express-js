@@ -3,13 +3,27 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = 3000;
 
-app.use(cookieParser());
-
 app.set("view engine", "ejs");
 
 app.get("/users/:id", (req, res) => {
-  console.log(req.cookies);
-  res.render("pages/users");
+  res.format({
+    "text/plain": function () {
+      res.send("hey");
+    },
+
+    "text/html": function () {
+      res.send("<p>html</p>");
+    },
+
+    "application/json": function () {
+      res.send({ message: "hey" });
+    },
+
+    default: function () {
+      // log the request and respond with 406
+      res.status(406).send("Not Acceptable");
+    },
+  });
 });
 
 app.listen(port, () => {
