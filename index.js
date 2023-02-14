@@ -1,29 +1,16 @@
 const express = require("express");
-const cookieParser = require("cookie-parser");
 const app = express();
 const port = 3000;
 
-app.set("view engine", "ejs");
+const logger = (req, res, next) => {
+  console.log(`${new Date()} - ${req.method} - ${req.ip}`);
+  next();
+};
+
+app.use(logger);
 
 app.get("/users/:id", (req, res) => {
-  res.format({
-    "text/plain": function () {
-      res.send("hey");
-    },
-
-    "text/html": function () {
-      res.send("<p>html</p>");
-    },
-
-    "application/json": function () {
-      res.send({ message: "hey" });
-    },
-
-    default: function () {
-      // log the request and respond with 406
-      res.status(406).send("Not Acceptable");
-    },
-  });
+  res.send("Users page");
 });
 
 app.listen(port, () => {
