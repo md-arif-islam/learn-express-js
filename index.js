@@ -1,27 +1,15 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = 3000;
-app.use(express.json());
-app.use(express.static(__dirname + "/public"));
 
-// Middleware
-app.param("id", (req, res, next, id) => {
-  const userDetails = {
-    id: id,
-    name: "Bangladesh",
-  };
-  req.userDetails = userDetails;
-  next();
-});
+app.use(cookieParser());
+
+app.set("view engine", "ejs");
 
 app.get("/users/:id", (req, res) => {
-  console.log(req.userDetails);
-  res.send("This is home page");
-});
-
-app.post("/", (req, res) => {
-  console.log(req.body);
-  res.send("This is home page with post request");
+  console.log(req.cookies);
+  res.render("pages/users");
 });
 
 app.listen(port, () => {
